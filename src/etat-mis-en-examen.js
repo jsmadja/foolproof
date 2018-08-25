@@ -20,8 +20,7 @@ class EtatMisEnExamen {
         if (this.nature === 'D') {
             prochaineDateEcheance.add(4, 'M');
         } else {
-            prochaineDateEcheance.add(1, 'Yconst toHtmlRows = sheet =>
-');
+            prochaineDateEcheance.add(1, 'Y');
         }
         if (this.dateDerniereGestionAlerte) {
             do {
