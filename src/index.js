@@ -2,31 +2,17 @@ const _ = require('lodash');
 const moment = require('moment');
 const XLSX = require('xlsx');
 const EtatMisEnExamen = require('./etat-mis-en-examen');
-
-const formatDate = (d) => d ? d.format('DD/MM/YY') : '';
+const toHtmlRow = require('./template').toHtmlRow;
 
 const convertRowToEtatMisEnExamen = row =>
     new EtatMisEnExamen(row['Dossier'], row['Mis en examen'], row['Nature'], moment(row['Date du mandat de dépôt initial'], 'DD/MM/YYYY'), row["Date de gestion de l’alerte"] ? moment(row["Date de gestion de l’alerte"], 'DD/MM/YYYY') : undefined);
 
-const toHtmlRow = (className, etat) =>
-    `<tr class="${className}">
-                    <td class="left aligned">${etat.nom}</td>
-                    <td class="right aligned">${etat.dossier}</td>
-                    <td>${etat.nature}</td>
-                    <td>${formatDate(etat.dateMandatDepotInitiale)}</td>
-                    <td>${formatDate(etat.dateDernierRenouvellement)}</td>
-                    <td>${etat.nombreProlongations}</td>
-                    <td><strong>${formatDate(etat.dateProchaineEcheance)}</strong></td>
-                    <td><strong>${etat.delailAvantEcheanceMandatDepot} jours</strong></td>
-                    <td>${etat.renouvellements.map(r => formatDate(r)).join('<br/>')}</td>
-            </tr>`;
-
 const toHtmlRows = sheet =>
     _(sheet)
         .map(row => convertRowToEtatMisEnExamen(row))
-        .orderBy(etat => etat.delailAvantEcheanceMandatDepot)
+        .orderBy(etat => etat.delaiAvantEcheanceMandatDepot)
         .map(etat => {
-            const delailAvantEcheance = etat.delailAvantEcheanceMandatDepot;
+            const delailAvantEcheance = etat.delaiAvantEcheanceMandatDepot;
             let className = 'negative';
             let category = 'p1';
             if (delailAvantEcheance > 35) {

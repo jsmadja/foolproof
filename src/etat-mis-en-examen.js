@@ -1,4 +1,5 @@
 const moment = require('moment');
+const _ = require('lodash');
 
 class EtatMisEnExamen {
     constructor(dossier, nom, nature, dateMandatDepotInitiale, dateDerniereGestionAlerte, referenceDate = moment()) {
@@ -11,22 +12,7 @@ class EtatMisEnExamen {
     }
 
     get nombreProlongations() {
-        let prochaineDateEcheance = moment(this.dateMandatDepotInitiale);
-        if (this.nature === 'D') {
-            prochaineDateEcheance.add(4, 'M');
-        } else {
-            prochaineDateEcheance.add(1, 'Y');
-        }
-        let count = 0;
-        while (prochaineDateEcheance.isBefore(this.referenceDate)) {
-            if (this.nature === 'D') {
-                prochaineDateEcheance.add(4, 'M');
-            } else {
-                prochaineDateEcheance.add(6, 'M');
-            }
-            count++;
-        }
-        return count;
+        return this.renouvellements.length;
     }
 
     get dateProchaineEcheance() {
@@ -34,7 +20,8 @@ class EtatMisEnExamen {
         if (this.nature === 'D') {
             prochaineDateEcheance.add(4, 'M');
         } else {
-            prochaineDateEcheance.add(1, 'Y');
+            prochaineDateEcheance.add(1, 'Yconst toHtmlRows = sheet =>
+');
         }
         if (this.dateDerniereGestionAlerte) {
             do {
@@ -48,27 +35,12 @@ class EtatMisEnExamen {
         return prochaineDateEcheance;
     }
 
-    get delailAvantEcheanceMandatDepot() {
+    get delaiAvantEcheanceMandatDepot() {
         return this.dateProchaineEcheance.diff(this.referenceDate, 'days');
     }
 
     get dateDernierRenouvellement() {
-        let dateProchaineEcheance = moment(this.dateMandatDepotInitiale);
-        if (this.nature === 'D') {
-            dateProchaineEcheance.add(4, 'M');
-        } else {
-            dateProchaineEcheance.add(1, 'Y');
-        }
-        let dateDernierRenouvellement = null;
-        while (dateProchaineEcheance.isBefore(this.referenceDate)) {
-            dateDernierRenouvellement = moment(dateProchaineEcheance);
-            if (this.nature === 'D') {
-                dateProchaineEcheance.add(4, 'M');
-            } else {
-                dateProchaineEcheance.add(6, 'M');
-            }
-        }
-        return dateDernierRenouvellement;
+        return _.last(this.renouvellements);
     }
 
     get renouvellements() {
@@ -92,7 +64,6 @@ class EtatMisEnExamen {
         }
         return _.take(renouvellements, renouvellements.length - 1);
     }
-
 
 }
 

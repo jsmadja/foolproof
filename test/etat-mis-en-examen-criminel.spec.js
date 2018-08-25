@@ -10,7 +10,7 @@ describe('Etat Mis en Examen Criminel', function () {
         assert.equal(e.dateProchaineEcheance.format('DD/MM/YYYY'), '01/01/2019');
         assert.equal(e.dateMandatDepotInitiale.format('DD/MM/YYYY'), '01/01/2018');
         assert.equal(e.dateDerniereGestionAlerte, undefined);
-        assert.equal(e.delailAvantEcheanceMandatDepot, 275);
+        assert.equal(e.delaiAvantEcheanceMandatDepot, 275);
         assert.equal(e.nombreProlongations, 0);
         assert.deepEqual(
             _.omit(e, ['dateMandatDepotInitiale', 'referenceDate', 'dateDerniereGestionAlerte']),
@@ -27,7 +27,7 @@ describe('Etat Mis en Examen Criminel', function () {
         assert.equal(e.dateProchaineEcheance.format('DD/MM/YYYY'), '01/07/2019');
         assert.equal(e.dateMandatDepotInitiale.format('DD/MM/YYYY'), '01/01/2018');
         assert.equal(e.dateDerniereGestionAlerte.format('DD/MM/YYYY'), '01/04/2018');
-        assert.equal(e.delailAvantEcheanceMandatDepot, 456);
+        assert.equal(e.delaiAvantEcheanceMandatDepot, 456);
         assert.equal(e.nombreProlongations, 0);
         assert.deepEqual(
             _.omit(e, ['dateMandatDepotInitiale', 'referenceDate', 'dateDerniereGestionAlerte']),
@@ -44,7 +44,7 @@ describe('Etat Mis en Examen Criminel', function () {
         assert.equal(e.dateProchaineEcheance.format('DD/MM/YYYY'), '01/07/2019');
         assert.equal(e.dateMandatDepotInitiale.format('DD/MM/YYYY'), '01/01/2018');
         assert.equal(e.dateDerniereGestionAlerte.format('DD/MM/YYYY'), '01/04/2018');
-        assert.equal(e.delailAvantEcheanceMandatDepot, 394);
+        assert.equal(e.delaiAvantEcheanceMandatDepot, 394);
         assert.equal(e.nombreProlongations, 0);
         assert.deepEqual(
             _.omit(e, ['dateMandatDepotInitiale', 'referenceDate', 'dateDerniereGestionAlerte']),
