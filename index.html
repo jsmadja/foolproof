@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+<head>
+    <title>ZonZon Alert</title>
+    <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+    <script
+            src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
+    <script src="semantic/dist/semantic.min.js"></script>
+    <script src="dist/main.js"></script>
+
+    <style>
+        .grid.container {
+            margin-top: 1em;
+            margin-bottom: 1em;
+        }
+
+        .inputfile {
+            width: 0.1px;
+            height: 0.1px;
+            opacity: 0;
+            overflow: hidden;
+            position: absolute;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+
+
+<div class="ui segment">
+    <div class="ui middle aligned center aligned grid container">
+        <div class="ui fluid">
+            <input type="file" class="inputfile" id="fileinput"/>
+
+            <label for="fileinput" class="ui violet right floated button">
+                <i class="ui upload icon"></i>
+                Analyser le tableau de bord détention
+            </label>
+        </div>
+    </div>
+
+
+    <table class="ui red inverted celled table center aligned selectable">
+        <thead>
+        <tr>
+            <th>Mis en examen</th>
+            <th>Dossier</th>
+            <th>Nature</th>
+            <th>Date du mandat de dépôt</th>
+            <th>Date du dernier renouvellement</th>
+            <th>Nombre de prolongations à ce jour</th>
+            <th>Date de prolongation max</th>
+            <th>Délai avant échéance MD</th>
+        </tr>
+        </thead>
+        <tbody id="p1">
+        </tbody>
+    </table>
+
+    <table class="ui yellow inverted celled table center aligned selectable">
+        <thead>
+        <tr>
+            <th>Mis en examen</th>
+            <th>Dossier</th>
+            <th>Nature</th>
+            <th>Date du mandat de dépôt</th>
+            <th>Date du dernier renouvellement</th>
+            <th>Nombre de prolongations à ce jour</th>
+            <th>Date de prolongation max</th>
+            <th>Délai avant échéance MD</th>
+        </tr>
+        </thead>
+        <tbody id="p2">
+        </tbody>
+    </table>
+
+    <table class="ui green inverted celled table center aligned selectable">
+        <thead>
+        <tr>
+            <th>Mis en examen</th>
+            <th>Dossier</th>
+            <th>Nature</th>
+            <th>Date du mandat de dépôt</th>
+            <th>Date du dernier renouvellement</th>
+            <th>Nombre de prolongations à ce jour</th>
+            <th>Date de prolongation max</th>
+            <th>Délai avant échéance MD</th>
+        </tr>
+        </thead>
+        <tbody id="p3">
+        </tbody>
+    </table>
+</div>
+
+<script>
+    document.getElementById('fileinput').addEventListener('change', ZonZon.fill, false);
+</script>
+</body>
+</html>
