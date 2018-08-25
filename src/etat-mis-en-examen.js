@@ -1,6 +1,12 @@
 const moment = require('moment');
 const _ = require('lodash');
 
+const calculeDateProlongationInitiale = (etat, dateProchaineEcheance) =>
+    etat.isDelictuel() ? moment(dateProchaineEcheance).add(4, 'M') : moment(dateProchaineEcheance).add(1, 'Y');
+
+const calculeDateProlongation = (etat, dateProchaineEcheance) =>
+    etat.isDelictuel() ? dateProchaineEcheance.add(4, 'M') : dateProchaineEcheance.add(6, 'M');
+
 class EtatMisEnExamen {
     constructor(dossier, nom, nature, dateMandatDepotInitiale, dateDerniereGestionAlerte, referenceDate = moment()) {
         this.dossier = dossier;
@@ -12,26 +18,11 @@ class EtatMisEnExamen {
     }
 
     get nombreProlongations() {
-        return this.renouvellements.length;
+        return _.filter(this.renouvellements, r => r.isBefore(this.referenceDate)).length;
     }
 
     get dateProchaineEcheance() {
-        let prochaineDateEcheance = moment(this.dateMandatDepotInitiale);
-        if (this.nature === 'D') {
-            prochaineDateEcheance.add(4, 'M');
-        } else {
-            prochaineDateEcheance.add(1, 'Y');
-        }
-        if (this.dateDerniereGestionAlerte) {
-            do {
-                if (this.nature === 'D') {
-                    prochaineDateEcheance.add(4, 'M');
-                } else {
-                    prochaineDateEcheance.add(6, 'M');
-                }
-            } while (prochaineDateEcheance.isBefore(this.dateDerniereGestionAlerte));
-        }
-        return prochaineDateEcheance;
+        return _.last(this.renouvellements);
     }
 
     get delaiAvantEcheanceMandatDepot() {
@@ -39,29 +30,25 @@ class EtatMisEnExamen {
     }
 
     get dateDernierRenouvellement() {
-        return _.last(this.renouvellements);
+        return this.renouvellements[this.renouvellements.length - 2];
     }
 
     get renouvellements() {
         const renouvellements = [];
-        let dateProchaineEcheance = moment(this.dateMandatDepotInitiale);
-        if (this.nature === 'D') {
-            dateProchaineEcheance.add(4, 'M');
-        } else {
-            dateProchaineEcheance.add(1, 'Y');
-        }
+        let dateProchaineEcheance = calculeDateProlongationInitiale(this, this.dateMandatDepotInitiale);
         renouvellements.push(moment(dateProchaineEcheance));
         let dateDernierRenouvellement = null;
-        while (dateProchaineEcheance.isBefore(this.referenceDate)) {
-            dateDernierRenouvellement = moment(dateProchaineEcheance);
-            if (this.nature === 'D') {
-                dateProchaineEcheance.add(4, 'M');
-            } else {
-                dateProchaineEcheance.add(6, 'M');
+        do {
+            dateDernierRenouvellement = calculeDateProlongation(this, dateProchaineEcheance);
+            if (this.dateDerniereGestionAlerte) {
+                renouvellements.push(moment(dateProchaineEcheance));
             }
-            renouvellements.push(moment(dateProchaineEcheance));
-        }
-        return _.take(renouvellements, renouvellements.length - 1);
+        } while (dateProchaineEcheance.isBefore(this.referenceDate));
+        return renouvellements;
+    }
+
+    isDelictuel() {
+        return this.nature === 'D'
     }
 
 }
